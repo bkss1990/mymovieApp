@@ -1,1 +1,4 @@
-# react-tmdb-app
+# REACT JS
+# Node JS
+# Express JS
+# MongoDB
