@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { List, Avatar, Row, Col, Button } from 'antd';
+import {  Row, Button } from 'antd';
 import axios from 'axios';
 
 import Comments from './Sections/Comments'
@@ -21,29 +21,6 @@ function MovieDetailPage(props) {
     const movieVariable = {
         movieId: movieId
     }
-
-    useEffect(() => {
-
-        let endpointForMovieInfo = `${API_URL}movie/${movieId}?api_key=${API_KEY}&language=en-US`;
-        fetchDetailInfo(endpointForMovieInfo)
-
-        axios.post('/api/comment/getComments', movieVariable)
-            .then(response => {
-                console.log(response)
-                if (response.data.success) {
-                    console.log('response.data.comments', response.data.comments)
-                    setCommentLists(response.data.comments)
-                } else {
-                    alert('Failed to get comments Info')
-                }
-            })
-
-    }, [])
-
-    const toggleActorView = () => {
-        setActorToggle(!ActorToggle)
-    }
-
     const fetchDetailInfo = (endpoint) => {
 
         fetch(endpoint)
@@ -66,6 +43,29 @@ function MovieDetailPage(props) {
             .catch(error => console.error('Error:', error)
             )
     }
+    useEffect(() => {
+
+        let endpointForMovieInfo = `${API_URL}movie/${movieId}?api_key=${API_KEY}&language=en-US`;
+        fetchDetailInfo(endpointForMovieInfo)
+
+        axios.post('/api/comment/getComments', movieVariable)
+            .then(response => {
+                console.log(response)
+                if (response.data.success) {
+                    console.log('response.data.comments', response.data.comments)
+                    setCommentLists(response.data.comments)
+                } else {
+                    alert('Failed to get comments Info')
+                }
+            })
+
+    }, [fetchDetailInfo, movieId, movieVariable])
+
+    const toggleActorView = () => {
+        setActorToggle(!ActorToggle)
+    }
+
+  
 
     const updateComment = (newComment) => {
         setCommentLists(CommentLists.concat(newComment))

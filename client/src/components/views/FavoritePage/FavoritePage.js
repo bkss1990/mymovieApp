@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Typography, Popover, Button } from 'antd';
+import React, { useEffect, useState, useCallback } from 'react'
+import { Typography, Popover } from 'antd';
 import axios from 'axios';
 import './favorite.css';
 import { useSelector } from 'react-redux';
@@ -14,11 +14,7 @@ function FavoritePage() {
     const [Loading, setLoading] = useState(true)
     let variable = { userFrom: localStorage.getItem('userId') }
 
-    useEffect(() => {
-        fetchFavoredMovie()
-    }, [])
-
-    const fetchFavoredMovie = () => {
+    const fetchFavoredMovie = useCallback(() => {
         axios.post('/api/favorite/getFavoredMovie', variable)
             .then(response => {
                 if (response.data.success) {
@@ -29,7 +25,11 @@ function FavoritePage() {
                     alert('Failed to get subscription videos')
                 }
             })
-    }
+    })
+    useEffect(() => {
+        fetchFavoredMovie()
+    }, [fetchFavoredMovie])
+
 
     const onClickDelete = (movieId, userFrom) => {
 

@@ -30,15 +30,14 @@ function LikeDislikes(props) {
                 if (response.data.success) {
                     //How many likes does this video or comment have 
                     setLikes(response.data.likes.length)
-
                     //if I already click this like button or not 
                     response.data.likes.map(like => {
                         if (like.userId === props.userId) {
-                            setLikeAction('liked')
+                          return setLikeAction('liked')
                         }
                     })
                 } else {
-                    alert('Failed to get likes')
+                    return alert('Failed to get likes')
                 }
             })
 
@@ -60,7 +59,7 @@ function LikeDislikes(props) {
                 }
             })
 
-    }, [])
+    }, [props.userId, variable])
 
 
     const onLike = () => {
